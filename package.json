@@ -1,0 +1,33 @@
+{
+    "name": "nnplayground",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "build": "parcel build frontend/index.html --public-url ./",
+        "start": "parcel frontend/index.html"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@mui/material": "^5.13.7",
+        "@mui/styled-engine-sc": "^5.12.0",
+        "@mui/x-data-grid": "^6.9.2",
+        "@uiw/react-textarea-code-editor": "^2.1.7",
+        "csv": "^6.3.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-dropzone": "^14.2.3",
+        "react-router-dom": "^6.14.1",
+        "react-toastify": "^9.1.3",
+        "styled-components": "^5.3.11",
+        "sweetalert2": "^11.7.12",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "buffer": "^6.0.3",
+        "events": "^3.3.0",
+        "parcel": "^2.9.3",
+        "process": "^0.11.10",
+        "stream-browserify": "^3.0.0"
+    }
+}
