@@ -1,19 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Menubar, MenubarItem } from './components/Menubar'
 import { HashRouter, Route, Routes } from "react-router-dom"
 import { PageScaffold } from './components/PageScaffold'
 import { FullscreenNotice } from './components/SimpleComponents'
 import { DatasetsRoute } from './routes/DatasetsRoute'
 import { StartPageRoute } from './routes/StartPageRoute'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import { Playground } from './code/Playground'
 import Swal from 'sweetalert2'
-import { Tasks } from './code/Tasks'
 import { BackendsRoute } from './routes/BackendsRoute'
 import { ScriptsRoute } from './routes/ScriptsRoute'
 import { ScriptEditorRoute } from './routes/ScriptEditorRoute'
+import { SnackbarProvider } from 'notistack'
+import { TaskManager } from './code/TaskManager'
  
 // Main app component
 const App = props => {
@@ -57,7 +55,7 @@ const App = props => {
         </HashRouter>
 
         {/* Toast container */}
-        <ToastContainer />
+        <SnackbarProvider />
 
     </div>
     
@@ -70,3 +68,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App />)
 window.addEventListener('keydown', e => {
     if ((e.ctrlKey || e.metaKey) && e.key == 's') e.preventDefault()
 })
+
+// Expose some useful classes to the JS console
+window.Playground = Playground
+window.TaskManager = TaskManager

@@ -86,7 +86,7 @@ export const ItemListPage = props => {
                 disableColumnSelector
                 disableRowSelectionOnClick
                 // processRowUpdate={processRowUpdate}
-                // onRowSelectionModelChange={ids => setSelectedIDs(ids)}
+                onRowSelectionModelChange={ids => setSelectedIDs(ids)}
                 onProcessRowUpdateError={err => {
                     console.warn('Unable to update row', err)
                     Swal.fire({ icon: 'error', title: 'Unable to update', text: err.message })

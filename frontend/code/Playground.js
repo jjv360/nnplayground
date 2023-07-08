@@ -2,7 +2,8 @@ import { v4 as uuidv4 } from 'uuid'
 import { DatasetFile, Datasets } from './DatasetFile'
 import { PlaygroundFile } from './PlaygroundFile'
 import { ScriptFile } from './ScriptFile'
-import { toast } from 'react-toastify'
+import { enqueueSnackbar } from 'notistack'
+import { TaskManager } from './TaskManager'
 
 /**
  * Main class for a loaded playground.
@@ -197,7 +198,7 @@ class Files {
 
             // Show error
             console.warn('Unable to refresh files:', e)
-            toast.error('Unable to refresh files: ' + e.message)
+            enqueueSnackbar('Unable to refresh files: ' + e.message, { variant: 'error' })
 
         } finally {
 
@@ -264,17 +265,19 @@ class Files {
     /** Add files to the dataset storage */
     async store(files) {
 
-        // Calculate total size
-        // let totalSize = files.reduce((a, b) => a + b.size, 0)
+        // Create task
+        await TaskManager.shared.build().name(`Importing files`).action(async task => {
 
-        // Go through each file
-        for (let file of files) {
+            // Calculate total size
+            let totalSize = files.reduce((a, b) => a + (b.size || 1), 0)
 
-            // Create toast
-            let toastId = toast.loading(`Adding ${file.name}...`)
+            // Go through each file
+            for (let i = 0 ; i < files.length ; i++) {
 
-            // Check for errors
-            try {
+                // Show task status
+                let file = files[i]
+                task.setStatus(`File ${i + 1} of ${files.length}`)
+                task.setProgress(i / files.length)
 
                 // Get file info
                 let fileTypeInfo = this.fileTypes.find(e => file.name.toLowerCase().endsWith(e.ext))
@@ -306,63 +309,56 @@ class Files {
                 // Start processing it
                 await playgroundFile._process()
 
-                // Update toast
-                toast.done(toastId)
-                toast.success({
-                    render: `Added ${file.name} (${file.size.toLocaleString()} bytes)`,
-                    autoClose: 2000,
-                })
-
-            } catch (err) {
-
-                // Update toast
-                console.warn(`[Files] Failed to add ${file.name}: `, err)
-                toast.done(toastId)
-                toast.error( {
-                    render: `Failed to add ${file.name}: ${err.message}`,
-                    autoClose: 5000,
-                })
-
             }
 
-        }
+            // Notify changed
+            this.playground.dispatchEvent(new Event('updated'))
 
-        // Notify changed
-        this.playground.dispatchEvent(new Event('updated'))
+        }).schedule()
 
     }
 
     /** Delete the files at the specified paths */
     async delete(paths) {
 
-        // Go through each path
-        for (let path of paths) {
+        // Create task
+        await TaskManager.shared.build().name(`Deleting files`).action(async task => {
 
-            // Find file
-            let fileIdx = this.all.findIndex(f => f.path == path)
-            if (fileIdx == -1) continue
-            let file = this.all[fileIdx]
+            // Go through each path
+            for (let i = 0 ; i < paths.length ; i++) {
 
-            // Get path components
-            let relativePathComponents = await this.playground.folder.resolve(file.handle)
-            if (!relativePathComponents || relativePathComponents.length == 0)
-                throw new Error("File is not part of the playground folder.")
-                
-            // Get folder handle for the folder containing the file
-            let folder = this.playground.folder
-            for (let i = 0 ; i < relativePathComponents.length - 1 ; i++)
-                folder = await folder.getDirectoryHandle(relativePathComponents[i])
+                // Update status
+                let path = paths[i]
+                task.setStatus(`File ${i + 1} of ${paths.length}`)
+                task.setProgress(i / paths.length)
 
-            // Delete file
-            await folder.removeEntry(relativePathComponents[relativePathComponents.length - 1])
+                // Find file
+                let fileIdx = this.all.findIndex(f => f.path == path)
+                if (fileIdx == -1) throw new Error("File not found: " + path)
+                let file = this.all[fileIdx]
 
-            // Remove from list
-            this.all.splice(fileIdx, 1)
+                // Get path components
+                let relativePathComponents = await this.playground.folder.resolve(file.handle)
+                if (!relativePathComponents || relativePathComponents.length == 0)
+                    throw new Error("File is not part of the playground folder.")
+                    
+                // Get folder handle for the folder containing the file
+                let folder = this.playground.folder
+                for (let i = 0 ; i < relativePathComponents.length - 1 ; i++)
+                    folder = await folder.getDirectoryHandle(relativePathComponents[i])
 
-        }
+                // Delete file
+                await folder.removeEntry(relativePathComponents[relativePathComponents.length - 1])
 
-        // Notify changed
-        this.playground.dispatchEvent(new Event('updated'))
+                // Remove from list
+                this.all.splice(fileIdx, 1)
+
+            }
+
+            // Notify changed
+            this.playground.dispatchEvent(new Event('updated'))
+
+        }).schedule()
 
     }
 

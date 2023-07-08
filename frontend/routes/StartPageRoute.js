@@ -3,7 +3,7 @@ import { Playground } from '../code/Playground'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import { FullscreenNotice } from '../components/SimpleComponents'
-import { Tasks } from '../code/Tasks'
+import { TaskManager } from '../code/TaskManager'
 import { Button } from '@mui/material'
 
 /** Displayed on startup */
@@ -13,7 +13,7 @@ export const StartPageRoute = props => {
     let navigate = useNavigate()
 
     // On click: Create or Open button
-    let openPlayground = () => Tasks.shared.run("Loading playground", async () => {
+    let openPlayground = () => TaskManager.shared.build().name("Loading playground").action(async () => {
 
         // Select folder to use
         let folder = await window.showDirectoryPicker({
@@ -52,7 +52,7 @@ export const StartPageRoute = props => {
         // Go to datasets page
         navigate('/datasets')
 
-    })
+    }).schedule()
 
     // Render UI
     return <FullscreenNotice icon={require('../resources/icon-app.svg')} title="NNPlayground" description="A tool to experiment with deep learning.">

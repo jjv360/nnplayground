@@ -3,6 +3,7 @@ import { ItemListPage } from '../components/SimpleComponents'
 import { DatasetFile } from '../code/DatasetFile'
 import { formatSize } from '../utilities/formatters'
 import { usePlaygroundFiles } from '../components/hooks'
+import { Playground } from '../code/Playground'
 
 /** Displays the list of dataset files in this playground */
 export const DatasetsRoute = props => {
@@ -19,8 +20,8 @@ export const DatasetsRoute = props => {
     ]
 
     // Map files to rows
-    const rows = files.map((file, idx) => ({
-        id: idx,
+    const rows = files.map(file => ({
+        id: file.path,
         name: file.name,
         size: file.size,
         lastModified: new Date(file.lastModified),
@@ -33,6 +34,7 @@ export const DatasetsRoute = props => {
         columns={columns}
         noItemsTitle="No datasets found" 
         noItemsDescription="Drag a CSV file in here."
+        onDelete={paths => Playground.current.files.delete(paths)}
     />
 
 }

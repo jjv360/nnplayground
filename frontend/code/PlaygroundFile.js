@@ -1,4 +1,4 @@
-import { toast } from "react-toastify"
+import { enqueueSnackbar } from "notistack"
 
 /**
  * Generic class representing a file in the playground.
@@ -83,7 +83,7 @@ export class PlaygroundFile {
 
             // Failed to process file
             console.warn('Failed to process ' + this.path, err)
-            toast.error('Failed to process ' + this.path + ': ' + err.message)
+            enqueueSnackbar('Failed to process ' + this.path + ': ' + err.message, { variant: 'error' })
 
         }
 

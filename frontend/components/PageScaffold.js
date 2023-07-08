@@ -1,13 +1,27 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Playground } from '../code/Playground'
+import { CircularProgress, LinearProgress } from '@mui/material'
+import { TaskManager } from '../code/TaskManager'
 
 /** Displays the defautl sidebar and content area for screens */
 export const PageScaffold = props => {
 
+    // State
+    let [ hoveringOnTasks, setHoveringOnTasks ] = React.useState(false)
+
     // Get current location
     let location = useLocation()
     let navigate = useNavigate()
+
+    // Get active tasks
+    let [ activeTasksUpdatedAt, setActiveTasksUpdatedAt ] = React.useState(Date.now())
+    let activeTask = TaskManager.shared.activeTasks[0]
+    React.useEffect(() => {
+        const onUpdate = () => setActiveTasksUpdatedAt(Date.now())
+        TaskManager.shared.addEventListener('updated', onUpdate)
+        return () => TaskManager.shared.removeEventListener('updated', onUpdate)
+    }, [])
 
     // If requires a loaded playground, check if one is loaded and go to the start page if not
     React.useEffect(() => {
@@ -19,7 +33,7 @@ export const PageScaffold = props => {
     return <>
 
         {/* Left sidebar */}
-        <div style={{ position: 'absolute', top: 0, left: 0, width: 200, height: '100%', borderRight: '1px solid #DDD', overflowX: 'hidden', overflowY: 'auto' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: 200, height: '100%', borderRight: '1px solid #DDD', overflowX: 'hidden', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
 
             {/* Logo */}
             <img src={require('../resources/icon-app.svg')} style={{ display: 'block', width: 64, height: 64, margin: '40px auto 20px auto' }} draggable="false" />
@@ -45,6 +59,23 @@ export const PageScaffold = props => {
             <ListItem title="Scripts" selected={location.pathname == '/scripts'} onClick={() => navigate('/scripts')} />
             <ListItem title="Plugins" selected={location.pathname == '/plugins'} onClick={() => navigate('/plugins')} />
             <ListItem title="Backends" selected={location.pathname == '/backends'} onClick={() => navigate('/backends')} />
+
+            {/* Flexible area */}
+            <div style={{ flex: '1 1 1px', minHeight: 10 }} />
+
+            {/* Active task panel, only visible if there's an active task */}
+            { activeTask ? <>
+                <LinearProgress value={activeTask.progress * 100} variant={activeTask.progress < 0 ? 'indeterminate' : 'determinate'} />
+                <div style={{ borderTop: '1px solid #DDD', display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 16px', backgroundColor: hoveringOnTasks ? '#DDD' : 'transparent', cursor: 'pointer' }}
+                    onPointerEnter={() => setHoveringOnTasks(true)}
+                    onPointerLeave={() => setHoveringOnTasks(false)}
+                >
+                    <div style={{ flex: '1 1 1px' }}>
+                        <div style={{ fontSize: 12, fontWeight: 'bold', color: '#444', lineHeight: 1.4 }}>{activeTask.name}</div>
+                        <div style={{ fontSize: 11, color: '#888', marginTop: 4 }}>{activeTask.status}</div>
+                    </div>
+                </div>
+            </> : null }
 
         </div>
 
@@ -75,8 +106,9 @@ const ListItem = props => {
             backgroundColor: props.selected ? 'rgba(0, 128, 255, 1)' : (isHovering ? 'rgba(0, 128, 255, 0.1)' : 'rgba(0, 128, 255, 0.0)'), 
             color: props.selected ? '#FFF' : (isHovering ? '#000' : '#888'),
             padding: '6px 10px', 
-            margin: '5px 10px', 
-            borderRadius: 4 
+            margin: '2px 10px', 
+            borderRadius: 4,
+            cursor: 'pointer',
         }}
         onPointerEnter={() => setHovering(true)}
         onPointerLeave={() => setHovering(false)}
