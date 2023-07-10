@@ -4,6 +4,7 @@ import { PlaygroundFile } from './PlaygroundFile'
 import { ScriptFile } from './ScriptFile'
 import { enqueueSnackbar } from 'notistack'
 import { TaskManager } from './TaskManager'
+import { Columns } from './Columns'
 
 /**
  * Main class for a loaded playground.
@@ -28,6 +29,9 @@ export class Playground extends EventTarget {
 
     /** List of all files */
     files = new Files(this)
+
+    /** List of columns */
+    columns = new Columns(this)
 
     /** Returns true if a playground exists in the specified folder */
     static async existsAt(folder) {

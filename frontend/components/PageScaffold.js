@@ -37,12 +37,12 @@ export const PageScaffold = props => {
 
             {/* Logo */}
             <img src={require('../resources/icon-app.svg')} style={{ display: 'block', width: 64, height: 64, margin: '40px auto 20px auto' }} draggable="false" />
-            <div style={{ textAlign: 'center', fontSize: 15, fontWeight: 'bold', color: '#333', marginBottom: 10 }}>NNPlayground</div>
+            <div style={{ textAlign: 'center', fontSize: 15, fontWeight: '500', color: '#333', marginBottom: 10 }}>NNPlayground</div>
             <div style={{ textAlign: 'center', fontSize: 12, color: '#999' }}>v{require('../../package.json').version}</div>
 
             {/* Input */}
             <SectionHeader title="Input" />
-            <ListItem title="Datasets" selected={location.pathname == '/datasets'} onClick={() => navigate('/datasets')} />
+            <ListItem title="Files" selected={location.pathname == '/files'} onClick={() => navigate('/files')} />
             <ListItem title="Columns" selected={location.pathname == '/columns'} onClick={() => navigate('/columns')} />
 
             {/* Transformation */}
@@ -80,7 +80,7 @@ export const PageScaffold = props => {
         </div>
 
         {/* Right panel */}
-        <div style={{ position: 'absolute', top: 0, left: 201, width: 'calc(100% - 201px)', height: '100%', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, left: 201, width: 'calc(100% - 201px)', height: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
 
             {/* Child components */}
             {props.children}

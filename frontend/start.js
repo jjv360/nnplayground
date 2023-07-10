@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import { HashRouter, Route, Routes } from "react-router-dom"
 import { PageScaffold } from './components/PageScaffold'
 import { FullscreenNotice } from './components/SimpleComponents'
-import { DatasetsRoute } from './routes/DatasetsRoute'
 import { StartPageRoute } from './routes/StartPageRoute'
 import { Playground } from './code/Playground'
 import Swal from 'sweetalert2'
@@ -12,6 +11,9 @@ import { ScriptsRoute } from './routes/ScriptsRoute'
 import { ScriptEditorRoute } from './routes/ScriptEditorRoute'
 import { SnackbarProvider } from 'notistack'
 import { TaskManager } from './code/TaskManager'
+import { ViewCsvRoute } from './routes/ViewCsvRoute'
+import { ColumnsRoute } from './routes/ColumnsRoute'
+import { FilesRoute } from './routes/FilesRoute'
  
 // Main app component
 const App = props => {
@@ -41,8 +43,9 @@ const App = props => {
         {/* App routes */}
         <HashRouter>
             <Routes>
-                <Route path="/datasets" element={<PageScaffold><DatasetsRoute /></PageScaffold>} />
-                <Route path="/columns" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
+                <Route path="/files" element={<PageScaffold><FilesRoute /></PageScaffold>} />
+                <Route path="/file/csv" element={<PageScaffold><ViewCsvRoute /></PageScaffold>} />
+                <Route path="/columns" element={<PageScaffold><ColumnsRoute /></PageScaffold>} />
                 <Route path="/models" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
                 <Route path="/executions" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
                 <Route path="/history" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />

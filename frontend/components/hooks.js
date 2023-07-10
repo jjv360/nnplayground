@@ -2,9 +2,9 @@ import React from "react"
 import { Playground } from "../code/Playground"
 
 /**
- * Fetch list of files from the current playground.
+ * Gets the latest date the playground was modified. Also allows the component to re-render when that happens.
  */
-export const usePlaygroundFiles = (filter) => {
+export const usePlaygroundUpdates = () => {
 
     // State
     let [ filesLastChanged, setFilesLastChanged ] = React.useState(Date.now())
@@ -22,6 +22,16 @@ export const usePlaygroundFiles = (filter) => {
         return () => Playground.current.removeEventListener('updated', callback)
 
     }, [])
+
+}
+
+/**
+ * Fetch list of files from the current playground.
+ */
+export const usePlaygroundFiles = (filter) => {
+
+    // Monitor playground for updates
+    usePlaygroundUpdates()
 
     // Apply filter if needed
     let files = Playground.current.files.all

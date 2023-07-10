@@ -4,12 +4,16 @@ import { DatasetFile } from '../code/DatasetFile'
 import { formatSize } from '../utilities/formatters'
 import { usePlaygroundFiles } from '../components/hooks'
 import { Playground } from '../code/Playground'
+import { useNavigate } from 'react-router-dom'
 
-/** Displays the list of dataset files in this playground */
-export const DatasetsRoute = props => {
+/** Displays the list of input files in this playground */
+export const FilesRoute = props => {
 
     // Get files
     let files = usePlaygroundFiles(f => f instanceof DatasetFile)
+
+    // Get navigator
+    let navigate = useNavigate()
     
     // Create columns for the table
     const columns = [
@@ -35,6 +39,7 @@ export const DatasetsRoute = props => {
         noItemsTitle="No datasets found" 
         noItemsDescription="Drag a CSV file in here."
         onDelete={paths => Playground.current.files.delete(paths)}
+        onDoubleClick={itm => navigate(`/file/csv?path=${encodeURIComponent(itm.id)}`)}
     />
 
 }

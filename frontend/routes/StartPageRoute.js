@@ -50,7 +50,7 @@ export const StartPageRoute = props => {
         }
 
         // Go to datasets page
-        navigate('/datasets')
+        navigate('/files')
 
     }).schedule()
 

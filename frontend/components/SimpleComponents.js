@@ -8,7 +8,7 @@ export const FullscreenNotice = props => <div style={{ position: 'absolute', top
         
     {/* Logo */}
     <img src={props.icon} style={{ width: 128, height: 128, marginBottom: 40 }} draggable="false" />
-    <div style={{ textAlign: 'center', fontSize: 20, fontWeight: 'bold', color: '#333', maxWidth: 400, marginBottom: 10 }}>{props.title}</div>
+    <div style={{ textAlign: 'center', fontSize: 20, fontWeight: '500', color: '#333', maxWidth: 400, marginBottom: 10 }}>{props.title}</div>
     <div style={{ textAlign: 'center', fontSize: 14, color: '#888', maxWidth: 400, lineHeight: 1.5, marginBottom: 30 }}>{props.description}</div>
 
     {/* Extras */}
@@ -67,14 +67,17 @@ export const ItemListPage = props => {
 
     // If no datasets are available, show message
     if (props.rows.length == 0) return <FullscreenNotice icon={require('../resources/icon-folder.svg')} title={props.noItemsTitle || "No items"} description={props.noItemsDescription || "No items found in this folder."}>
-        { props.onCreate ? <Button variant="outlined" onClick={props.onCreate}>Create new</Button> : null }
+        <div style={{ display: 'flex', gap: 10 }}>
+            { props.onCreate ? <Button variant="outlined" onClick={props.onCreate}>Create new</Button> : null }
+            { props.extraActions }
+        </div>
     </FullscreenNotice>
 
     // Render UI
     return <>
 
         {/* Content */}
-        <div style={{ position: 'absolute', top: 20, left: 20, width: 'calc(100% - 40px)', height: 'calc(100% - 40px)' }}>
+        <div style={{ position: 'absolute', top: 10, left: 10, width: 'calc(100% - 20px)', height: 'calc(100% - 20px)' }}>
             <DataGrid 
                 rows={props.rows} 
                 columns={props.columns} 
@@ -98,12 +101,14 @@ export const ItemListPage = props => {
                             { selectedIDs.length == 0 && props.onCreate ? <Button variant="contained" onClick={props.onCreate}>Create new</Button> : null }
                             { selectedIDs.length > 0 && props.onDelete ? <Button variant="outlined" onClick={onDelete}>Delete selected</Button> : null }
                             {/* <Button variant="outlined">Remove</Button> */}
+                            { props.extraActions }
                         </div>
                         <GridFooter sx={{
                             border: 'none', // To delete double border.
                         }} />
                     </GridFooterContainer>
                 }}
+                {...props.gridProps}
             />
         </div>
 
