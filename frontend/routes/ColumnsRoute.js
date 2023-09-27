@@ -149,7 +149,6 @@ const ColumnEditDialog = props => {
 
     // Set initial state when changing the editing column
     useEffect(() => {
-        console.log(props.column)
         setName(props.column?.name || '')
         setType(props.column?.type || '')
         setSource(props.column?.source || '')

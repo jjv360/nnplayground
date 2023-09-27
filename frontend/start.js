@@ -14,6 +14,8 @@ import { TaskManager } from './code/TaskManager'
 import { ViewCsvRoute } from './routes/ViewCsvRoute'
 import { ColumnsRoute } from './routes/ColumnsRoute'
 import { FilesRoute } from './routes/FilesRoute'
+import { ModelsRoute } from './routes/ModelsRoute'
+import { NewModelRoute } from './routes/NewModelRoute'
  
 // Main app component
 const App = props => {
@@ -46,7 +48,8 @@ const App = props => {
                 <Route path="/files" element={<PageScaffold><FilesRoute /></PageScaffold>} />
                 <Route path="/file/csv" element={<PageScaffold><ViewCsvRoute /></PageScaffold>} />
                 <Route path="/columns" element={<PageScaffold><ColumnsRoute /></PageScaffold>} />
-                <Route path="/models" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
+                <Route path="/models" element={<PageScaffold><ModelsRoute /></PageScaffold>} />
+                <Route path="/models/new" element={<PageScaffold><NewModelRoute /></PageScaffold>} />
                 <Route path="/executions" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
                 <Route path="/history" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
                 <Route path="/scripts" element={<PageScaffold><ScriptsRoute /></PageScaffold>} />
