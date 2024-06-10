@@ -51,6 +51,7 @@ export const PageScaffold = props => {
 
             {/* Output */}
             <SectionHeader title="Output" />
+            <ListItem title="Chat" selected={location.pathname == '/chat'} onClick={() => navigate('/chat')} />
             <ListItem title="Executions" selected={location.pathname == '/executions'} onClick={() => navigate('/executions')} />
             <ListItem title="History" selected={location.pathname == '/history'} onClick={() => navigate('/history')} />
 

@@ -16,6 +16,7 @@ import { ColumnsRoute } from './routes/ColumnsRoute'
 import { FilesRoute } from './routes/FilesRoute'
 import { ModelsRoute } from './routes/ModelsRoute'
 import { NewModelRoute } from './routes/NewModelRoute'
+import { ChatRoute } from './routes/ChatRoute'
  
 // Main app component
 const App = props => {
@@ -50,6 +51,7 @@ const App = props => {
                 <Route path="/columns" element={<PageScaffold><ColumnsRoute /></PageScaffold>} />
                 <Route path="/models" element={<PageScaffold><ModelsRoute /></PageScaffold>} />
                 <Route path="/models/new" element={<PageScaffold><NewModelRoute /></PageScaffold>} />
+                <Route path="/chat" element={<PageScaffold><ChatRoute /></PageScaffold>} />
                 <Route path="/executions" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
                 <Route path="/history" element={<PageScaffold><FullscreenNotice icon={require('./resources/icon-error.svg')} title="No route" description="Not implemented" /></PageScaffold>} />
                 <Route path="/scripts" element={<PageScaffold><ScriptsRoute /></PageScaffold>} />

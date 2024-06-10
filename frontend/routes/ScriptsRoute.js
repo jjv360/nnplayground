@@ -18,8 +18,8 @@ export const ScriptsRoute = props => {
     
     // Create columns for the table
     const columns = [
-        { field: 'name', headerName: 'Name', flex: true, editable: false, valueFormatter: params => params.value.replace(/\.js$/i, '') },
-        { field: 'size', headerName: 'Size', width: 150, type: 'number', valueFormatter: params => formatSize(params.value) },
+        { field: 'name', headerName: 'Name', flex: true, editable: false, valueFormatter: value => value.replace(/\.js$/i, '') },
+        { field: 'size', headerName: 'Size', width: 150, type: 'number', valueFormatter: value => formatSize(value) },
         { field: 'lastModified', headerName: 'Last Modified', width: 200, type: 'dateTime' },
     ]
 
